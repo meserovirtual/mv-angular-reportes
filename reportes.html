@@ -1,0 +1,33 @@
+<div class="title">
+    <h1>Reportes</h1></div>
+<div class="v-spacer"></div>
+<div ng-controller="ReportesController  as reportesCtrl"
+     name="reportesForm" novalidate>
+
+    <div class="responsive-container">
+    <button ng-click="reportesCtrl.verReporte('reportes/lstMargenes.html');">Margenes Promedio</button>
+    <button ng-click="reportesCtrl.verReporte('reportes/lstTotalesPorCuenta.html')">Total por Cuenta</button>
+    <button></button>
+    <button></button>
+    <button></button>
+    <button></button>
+    <button></button>
+    </div>
+    <div class="responsive-container">
+        <div ng-include="reportesCtrl.reporte" style="width: 100%"></div>
+
+    </div>
+
+    <div>
+        <!--<input type="submit"-->
+        <!--ng-disabled="reportesForm.user.$dirty && reportesForm.user.$invalid ||-->
+        <!--reportesForm.email.$dirty && reportesForm.email.$invalid">-->
+        <div class="btn"><input type="submit" ng-click="reportesCtrl.save();"
+                                class="relieve-2 btn-ok btn-big" value="">
+            <label>Guardar Producto</label>
+        </div>
+
+    </div>
+
+
+</div>

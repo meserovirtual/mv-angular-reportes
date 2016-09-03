@@ -1,0 +1,42 @@
+<div style="width: 100%;">
+
+
+    <div>
+        <input type="date" ng-model="reportesCtrl.desde">
+        <input type="date" ng-model="reportesCtrl.hasta">
+        <button ng-click="reportesCtrl.generar()">Generar</button>
+        <button ng-click="reportesCtrl.exportExcel('tblGraphMargenes')">Exportar</button>
+    </div>
+
+    <div id="graphMargenes"></div>
+    <table class="table table-striped" id="tblGraphMargenes">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Vendido a</th>
+            <th>Costo de</th>
+            <th>Margen</th>
+            <!--<th>Detalle</th>-->
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="row in reportesCtrl.datos"
+            ac-last-list-item>
+
+            <td class="">{{row.producto}}</td>
+            <td class="">{{row.vendido | currency}}</td>
+            <td class="">{{row.costo | currency}}</td>
+            <td class="">{{row.margen | currency}}</td>
+
+        </tr>
+        <!--</tbody>-->
+        <!--<tfoot>-->
+        <!--<tr>-->
+        <!--<td colspan="5" class="text-center" style="display: flex;">-->
+        <!-- -->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</tfoot>-->
+    </table>
+</div>

@@ -1,0 +1,34 @@
+<div style="width: 100%;">
+
+    <div>
+        <input type="date" ng-model="reportesCtrl.desde">
+        <input type="date" ng-model="reportesCtrl.hasta">
+        <button ng-click="reportesCtrl.generar()">Generar</button>
+        <button ng-click="reportesCtrl.exportExcel('tblLstTotalesPorCuenta')">Exportar</button>
+    </div>
+
+    <table class="table table-striped" id="tblLstTotalesPorCuenta">
+        <thead>
+        <tr>
+            <th>Cuenta</th>
+            <th>Descripción</th>
+            <th>Debe</th>
+            <th>Haber</th>
+            <th>Total</th>
+            <!--<th>Detalle</th>-->
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="row in reportesCtrl.datos"
+            ac-last-list-item>
+
+            <td class="">{{row.cuenta_id}}</td>
+            <td class="">{{row.descr}}</td>
+            <td class="">{{row.debe | currency}}</td>
+            <td class="">{{row.haber | currency}}</td>
+            <td class="">{{row.total | currency}}</td>
+
+        </tr>
+    </table>
+</div>

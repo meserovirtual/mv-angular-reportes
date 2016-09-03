@@ -1,0 +1,65 @@
+2016-04-22 03:18:35: exception 'Exception' with message 'MySQL host is not set' in C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php:253
+Stack trace:
+#0 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(275): MysqliDb->connect()
+#1 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(1479): MysqliDb->mysqli()
+#2 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(382): MysqliDb->_prepareQuery()
+#3 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(244): MysqliDb->rawQuery('(SELECT\r\n    c....', '', false)
+#4 [internal function]: Reportes::cierreDeCaja(Array)
+#5 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(17): call_user_func('Reportes::cierr...', Array)
+#6 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(266): Reportes::init(Array)
+#7 {main}
+2016-04-22 03:20:16: exception 'Exception' with message 'MySQL host is not set' in C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php:253
+Stack trace:
+#0 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(275): MysqliDb->connect()
+#1 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(1479): MysqliDb->mysqli()
+#2 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(382): MysqliDb->_prepareQuery()
+#3 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(244): MysqliDb->rawQuery('(SELECT\r\n    c....', '', false)
+#4 [internal function]: Reportes::cierreDeCaja(Array)
+#5 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(17): call_user_func('Reportes::cierr...', Array)
+#6 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(266): Reportes::init(Array)
+#7 {main}
+2016-04-22 03:25:34: exception 'Exception' with message 'MySQL host is not set' in C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php:253
+Stack trace:
+#0 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(275): MysqliDb->connect()
+#1 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(1479): MysqliDb->mysqli()
+#2 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(382): MysqliDb->_prepareQuery()
+#3 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(244): MysqliDb->rawQuery('(SELECT\r\n    c....', '', false)
+#4 [internal function]: Reportes::cierreDeCaja(Array)
+#5 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(17): call_user_func('Reportes::cierr...', Array)
+#6 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(266): Reportes::init(Array)
+#7 {main}
+2016-04-22 03:26:01: exception 'Exception' with message 'MySQL host is not set' in C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php:253
+Stack trace:
+#0 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(275): MysqliDb->connect()
+#1 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(1479): MysqliDb->mysqli()
+#2 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(382): MysqliDb->_prepareQuery()
+#3 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(244): MysqliDb->rawQuery('(SELECT\r\n    c....', '', false)
+#4 [internal function]: Reportes::cierreDeCaja(Array)
+#5 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(17): call_user_func('Reportes::cierr...', Array)
+#6 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(266): Reportes::init(Array)
+#7 {main}
+2016-05-10 21:01:49: exception 'Exception' with message 'Problem preparing query (select sum(m.importe), m.cuenta_id, c.descripcion from
+movimientos m
+left join cuentas c
+on m.cuenta_id = c.cuenta_id
+where m.cuenta_id in('1.1.4.01', '1.1.1.22','1.1.1.21','1.1.1.24')
+and m.importe > 0
+m.sucursal_id = 3 and m.pos_id=1 
+        AND m.asiento_id >= (SELECT
+                    asiento_inicio_id
+                FROM
+                    cajas
+                WHERE
+                    sucursal_id = 3 and pos_id=1
+                ORDER BY caja_id DESC
+                LIMIT 1)
+group by cuenta_id;) You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'm.sucursal_id = 3 and m.pos_id=1 
+        AND m.asiento_id >= (SELECT
+        ' at line 7' in C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php:1482
+Stack trace:
+#0 C:\xampp\htdocs\gestion-bayres\app\includes\MysqliDb.php(382): MysqliDb->_prepareQuery()
+#1 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(269): MysqliDb->rawQuery('select sum(m.im...', '', false)
+#2 [internal function]: Reportes::cierreDeCaja(Array)
+#3 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(17): call_user_func('Reportes::cierr...', Array)
+#4 C:\xampp\htdocs\gestion-bayres\app\bower_components\ac-angular-reportes\includes\ac-reportes.php(289): Reportes::init(Array)
+#5 {main}
