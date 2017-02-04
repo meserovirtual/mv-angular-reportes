@@ -6,7 +6,7 @@
     var currentScriptPath = scripts[scripts.length - 1].src;
 
     if (currentScriptPath.length == 0) {
-        currentScriptPath = window.installPath + '/ac-angular-reportes/includes/ac-reportes.php';
+        currentScriptPath = window.installPath + '/mv-angular-reportes/includes/ac-reportes.php';
     }
 
 

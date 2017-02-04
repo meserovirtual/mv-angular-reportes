@@ -1,0 +1,98 @@
+<div class="lista">
+
+    <!--div style="display: flex; flex-direction: row; justify-content: space-around; flex-wrap: wrap;">
+        <div class="input">
+            <input type="text" ng-model="$ctrl.filtro">
+            <label for="">Buscar Producto</label>
+        </div>
+        <select style="max-width: 300px; margin: 10px" name="" id="" ng-model="$ctrl.sucursal"
+                ng-options="sucursal.nombre for sucursal in $ctrl.sucursales"
+                ng-change="$ctrl.getData();"></select>
+    </div-->
+    <table>
+        <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Fecha Traslado</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in $ctrl.traslados | filter:$ctrl.filtro"
+                ng-click="$ctrl.getDetalle(row);$ctrl.detailsOpen = true;">
+                <td class="">{{row.usuario}}</td>
+                <td class="" style="text-align: center;">{{row.fecha_traslado}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="2">
+                <div class="table-td">
+                    <button class="btn-paginacion-first"
+                            ng-click="$ctrl.first();">Primera
+                    </button>
+                    <button class="btn-paginacion-prev"
+                            ng-click="$ctrl.prev();">Ant.
+                    </button>
+                    <div class="paginacion-paginas">
+                        <span>{{'PAGE' | xlat}} {{$ctrl.pagina}} {{'OF' | xlat}} {{$ctrl.paginas}}</span>
+                    </div>
+                    <div class="paginacion-go-to">{{'GO_TO' | xlat}} <input type="number"
+                                                                            ng-model="$ctrl.pagina"
+                                                                            ng-keyup="$ctrl.goToPagina();">
+                    </div>
+
+                    <button class="btn-paginacion-next"
+                            ng-click="$ctrl.next();">Sig.
+                    </button>
+                    <button class="btn-paginacion-last"
+                            ng-click="$ctrl.last();">Ultima
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+<ac-blocker blocker-click="$ctrl.traslado = {}; $ctrl.detailsOpen = false;" visibility="$ctrl.detailsOpen"></ac-blocker>
+
+<form class="form details" form-id="encomienda-detalle" ng-class="{'details-open':$ctrl.detailsOpen}">
+    <div class="detalle-container">
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap;justify-content: space-around;">
+            <div class="input">
+                <span type="text" id="usuario" name="usuario">{{$ctrl.trasladoDetalle[0].usuario}}</span>
+                <label for="usuario">USUARIO</label>
+
+            </div>
+            <div class="input">
+                <span type="text" id="fecha" name="fecha">{{$ctrl.trasladoDetalle[0].fecha_traslado}}</span>
+                <label for="fecha">FECHA DEL TRASLADO</label>
+
+            </div>
+        </div>
+
+        <div class="lista"
+             style="display: flex; flex-direction: row; flex-wrap: wrap;justify-content: space-around; min-height: 0px !important;">
+            <table style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Sucursal Origen</th>
+                    <th>Sucursal Destino</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in $ctrl.trasladoDetalle">
+                    <td class="">{{row.sucursal_origen}}</td>
+                    <td class="">{{row.sucursar_destino}}</td>
+                    <td class="">{{row.producto}}</td>
+                    <td class="" style="text-align: center">{{row.cantidad}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="botonera">
+            <button ng-click="$ctrl.detailsOpen =false; $ctrl.traslado = {}">Cerrar</button>
+        </div>
+    </div>
+</form>

@@ -10,16 +10,18 @@
     function reporteStock() {
         return {
             bindings: {},
-            templateUrl: window.installPath + '/ac-angular-reportes/ac-reporte-stock.html',
+            templateUrl: window.installPath + '/mv-angular-reportes/ac-reporte-stock.html',
             controller: ReporteStockController
         }
     }
 
-    ReporteStockController.$inject = ['StockService', 'SucursalesService', 'UserService', 'AcUtilsGlobals'];
-    function ReporteStockController(StockService, SucursalesService, UserService, AcUtilsGlobals) {
+    ReporteStockController.$inject = ['StockService', 'SucursalesService', 'UserService', 'AcUtilsGlobals', 'StockVars'];
+    function ReporteStockController(StockService, SucursalesService, UserService, AcUtilsGlobals, StockVars) {
         var vm = this;
         vm.sucursales = [];
         vm.sucursal = {};
+        vm.stocks = [];
+        vm.stock = {};
         vm.sucursal_id = UserService.getFromToken().data.sucursal_id;
 
         vm.getData = getData;
@@ -40,9 +42,7 @@
         function getData() {
             AcUtilsGlobals.sucursal_id_search = vm.sucursal.sucursal_id;
             StockService.get().then(function (data) {
-
                 vm.stocks = [];
-
 
                 for (var i in data) {
                     if (data[i].producto_tipo == 0) {
@@ -57,10 +57,8 @@
                     }
                 }
 
-
                 AcUtilsGlobals.sucursal_id_search = 0;
-
-
+                StockVars.clearCache = true;
             })
         }
 
