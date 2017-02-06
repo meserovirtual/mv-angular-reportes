@@ -3,13 +3,13 @@
     'use strict';
 
 
-    angular.module('acReporteTraslado', [])
-        .component('acReporteTraslado', acReporteTraslado());
+    angular.module('mvReporteTraslado', [])
+        .component('mvReporteTraslado', mvReporteTraslado());
 
-    function acReporteTraslado() {
+    function mvReporteTraslado() {
         return {
             bindings: {},
-            templateUrl: window.installPath + '/mv-angular-reportes/ac-reporte-traslado.html',
+            templateUrl: window.installPath + '/mv-angular-reportes/mv-reporte-traslado.html',
             controller: ReporteTrasladoController
         }
     }

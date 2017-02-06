@@ -6,25 +6,25 @@
     var currentScriptPath = scripts[scripts.length - 1].src;
 
     if (currentScriptPath.length == 0) {
-        currentScriptPath = window.installPath + '/mv-angular-reportes/includes/ac-reportes.php';
+        currentScriptPath = window.installPath + '/mv-angular-reportes/includes/mv-reportes.php';
     }
 
 
-    angular.module('acReportes', [])
+    angular.module('mvReportes', [])
 
-        .component('acReportes', AcReportes())
+        .component('mvReportes', MvReportes())
         .factory('ReportesService', ReportesService)
     ;
-    function AcReportes() {
+    function MvReportes() {
         return {
             bindings: {},
-            templateUrl: window.installPath + '/ac-angular-reportes/ac-reportes.html',
-            controller: acReportesController
+            templateUrl: window.installPath + '/mv-angular-reportes/mv-reportes.html',
+            controller: mvReportesController
         }
     }
 
-    acReportesController.$inject = ['$rootScope'];
-    function acReportesController($rootScope) {
+    mvReportesController.$inject = ['$rootScope'];
+    function mvReportesController($rootScope) {
         var vm = this;
         vm.reporte = 'stock';
 
@@ -197,7 +197,7 @@
     function ReportesService($http, $window) {
 
         var service = {};
-        var url = currentScriptPath.replace('ac-reportes.js', '/includes/ac-reportes.php');
+        var url = currentScriptPath.replace('mv-reportes.js', '/includes/mv-reportes.php');
         // Generación de excel
         var uri = 'data:application/vnd.ms-excel;base64,',
             template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',

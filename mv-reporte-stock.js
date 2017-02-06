@@ -3,14 +3,14 @@
     'use strict';
 
 
-    angular.module('acReporteStock', [])
+    angular.module('mvReporteStock', [])
 
         .component('reporteStock', reporteStock());
 
     function reporteStock() {
         return {
             bindings: {},
-            templateUrl: window.installPath + '/mv-angular-reportes/ac-reporte-stock.html',
+            templateUrl: window.installPath + '/mv-angular-reportes/mv-reporte-stock.html',
             controller: ReporteStockController
         }
     }
