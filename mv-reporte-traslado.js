@@ -14,8 +14,8 @@
         }
     }
 
-    ReporteTrasladoController.$inject = ['StockService', 'SucursalesService', 'UserService', 'AcUtilsGlobals', 'StockVars', 'AcUtils'];
-    function ReporteTrasladoController(StockService, SucursalesService, UserService, AcUtilsGlobals, StockVars, AcUtils) {
+    ReporteTrasladoController.$inject = ['StockService', 'SucursalesService', 'UserService', 'MvUtilsGlobals', 'StockVars', 'MvUtils'];
+    function ReporteTrasladoController(StockService, SucursalesService, UserService, MvUtilsGlobals, StockVars, MvUtils) {
         var vm = this;
         vm.detailsOpen = false;
         vm.sucursales = [];
@@ -42,7 +42,7 @@
 
 
         function getData() {
-            AcUtilsGlobals.sucursal_id_search = vm.sucursal.sucursal_id;
+            MvUtilsGlobals.sucursal_id_search = vm.sucursal.sucursal_id;
             StockService.getTraslado().then(function (data) {
                 vm.traslados = data;
 
@@ -73,20 +73,20 @@
         }
 
         vm.next = function () {
-            paginar(AcUtils.next(StockVars));
+            paginar(MvUtils.next(StockVars));
         };
         vm.prev = function () {
-            paginar(AcUtils.prev(StockVars));
+            paginar(MvUtils.prev(StockVars));
         };
         vm.first = function () {
-            paginar(AcUtils.first(StockVars));
+            paginar(MvUtils.first(StockVars));
         };
         vm.last = function () {
-            paginar(AcUtils.last(StockVars));
+            paginar(MvUtils.last(StockVars));
         };
 
         vm.goToPagina = function () {
-            paginar(AcUtils.goToPagina(vm.pagina, StockVars));
+            paginar(MvUtils.goToPagina(vm.pagina, StockVars));
         }
 
     }

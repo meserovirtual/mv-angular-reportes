@@ -15,8 +15,8 @@
         }
     }
 
-    ReporteStockController.$inject = ['StockService', 'SucursalesService', 'UserService', 'AcUtilsGlobals', 'StockVars'];
-    function ReporteStockController(StockService, SucursalesService, UserService, AcUtilsGlobals, StockVars) {
+    ReporteStockController.$inject = ['StockService', 'SucursalesService', 'UserService', 'MvUtilsGlobals', 'StockVars'];
+    function ReporteStockController(StockService, SucursalesService, UserService, MvUtilsGlobals, StockVars) {
         var vm = this;
         vm.sucursales = [];
         vm.sucursal = {};
@@ -40,7 +40,7 @@
 
 
         function getData() {
-            AcUtilsGlobals.sucursal_id_search = vm.sucursal.sucursal_id;
+            MvUtilsGlobals.sucursal_id_search = vm.sucursal.sucursal_id;
             StockService.get().then(function (data) {
                 vm.stocks = [];
 
@@ -57,7 +57,7 @@
                     }
                 }
 
-                AcUtilsGlobals.sucursal_id_search = 0;
+                MvUtilsGlobals.sucursal_id_search = 0;
                 StockVars.clearCache = true;
             })
         }
