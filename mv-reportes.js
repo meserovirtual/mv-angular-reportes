@@ -193,8 +193,8 @@
     //    }
     //}
 
-    ReportesService.$inject = ['$http', '$window'];
-    function ReportesService($http, $window) {
+    ReportesService.$inject = ['$http', '$window', 'ErrorHandler'];
+    function ReportesService($http, $window, ErrorHandler) {
 
         var service = {};
         var url = currentScriptPath.replace('mv-reportes.js', '/includes/mv-reportes.php');
@@ -224,13 +224,13 @@
 
         }
 
-        function cierreDeCaja(sucursal_id, pos_id, callback) {
+        function cierreDeCaja(sucursal_id, pos_id) {
             $http.get(url + '?function=cierreDeCaja&sucursal_id=' + sucursal_id + '&pos_id=' + pos_id)
-                .success(function (data) {
-                    callback(data)
+                .then(function (data) {
+                    return data;
                 })
-                .error(function (data) {
-                    callback(data)
+                .catch(function (data) {
+                    ErrorHandler(data);
                 });
         }
 
