@@ -11,10 +11,8 @@
 
 
     angular.module('mvReportes', [])
-
         .component('mvReportes', MvReportes())
-        .factory('ReportesService', ReportesService)
-    ;
+        .factory('ReportesService', ReportesService);
     function MvReportes() {
         return {
             bindings: {},
@@ -193,8 +191,8 @@
     //    }
     //}
 
-    ReportesService.$inject = ['$http', '$window', 'ErrorHandler'];
-    function ReportesService($http, $window, ErrorHandler) {
+    ReportesService.$inject = ['$http', '$window', 'ErrorHandler', '$q'];
+    function ReportesService($http, $window, ErrorHandler, $q) {
 
         var service = {};
         var url = currentScriptPath.replace('mv-reportes.js', '/includes/mv-reportes.php');
@@ -225,7 +223,7 @@
         }
 
         function cierreDeCaja(sucursal_id, pos_id) {
-            $http.get(url + '?function=cierreDeCaja&sucursal_id=' + sucursal_id + '&pos_id=' + pos_id)
+            return $http.get(url + '?function=cierreDeCaja&sucursal_id=' + sucursal_id + '&pos_id=' + pos_id)
                 .then(function (data) {
                     return data;
                 })
@@ -234,34 +232,30 @@
                 });
         }
 
-        function getMargenes(desde, hasta, callback) {
-
+        function getMargenes(desde, hasta) {
             var _desde = desde.getFullYear() + '-' + (desde.getMonth() + 1) + '-' + desde.getDate();
             var _hasta = hasta.getFullYear() + '-' + (hasta.getMonth() + 1) + '-' + hasta.getDate();
 
-            $http.get(url + '?function=getMargenes&desde=' + _desde + '&hasta=' + _hasta)
-                .success(function (data) {
-                    callback(data)
+            return $http.get(url + '?function=getMargenes&desde=' + _desde + '&hasta=' + _hasta)
+                .then(function (data) {
+                    return data;
                 })
-                .error(function (data) {
-                    callback(data)
+                .catch(function (data) {
+                    ErrorHandler(data);
                 });
-
         }
 
-        function getTotalesPorCuenta(desde, hasta, callback) {
-
+        function getTotalesPorCuenta(desde, hasta) {
             var _desde = desde.getFullYear() + '-' + (desde.getMonth() + 1) + '-' + desde.getDate();
             var _hasta = hasta.getFullYear() + '-' + (hasta.getMonth() + 1) + '-' + hasta.getDate();
 
-            $http.get(url + '?function=getTotalesPorCuenta&desde=' + _desde + '&hasta=' + _hasta)
-                .success(function (data) {
-                    callback(data)
+            return $http.get(url + '?function=getTotalesPorCuenta&desde=' + _desde + '&hasta=' + _hasta)
+                .then(function (data) {
+                    return data;
                 })
-                .error(function (data) {
-                    callback(data)
+                .catch(function (data) {
+                    ErrorHandler(data);
                 });
-
         }
 
 
