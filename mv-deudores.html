@@ -1,0 +1,60 @@
+<div class="container container-bgk container-padding">
+    <h1 class="secciones">Depósitos</h1>
+    <form class="" name="trasladarStockForm" form-id="mv-traslados">
+        <div class="form-container-wrapper">
+            <div class="form-flex">
+                <div class="input">
+                    <label for="origen">Sucursal de Origen</label>
+                    <select name="origen" id="origen" ng-model="$ctrl.sucursal_origen"
+                            ng-options="sucursal as sucursal.nombre for sucursal in $ctrl.sucursales">
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Deudor</th>
+            <th>Saldo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in $ctrl.usuarios | filter:$ctrl.filtro">
+            <td class="">{{row.apellido + ' ' + row.nombre}}</td>
+            <td class="">{{row.saldo}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="2">
+                <div class="table-td">
+          <span>
+              <button class="paginacion-primera" ng-click="$ctrl.first();"></button>
+              <button class="paginacion-ant" ng-click="$ctrl.prev();"></button>
+          </span>
+          <span class="paginacion-paginas">
+              <span>{{'PAGE' | xlat}} {{$ctrl.pagina}} {{'OF' | xlat}} {{$ctrl.paginas}}</span>
+          </span>
+          <span class="paginacion-go-to">{{'GO_TO' | xlat}}
+              <input type="number" ng-model="$ctrl.pagina" ng-keyup="$ctrl.goToPagina();"
+                     class="input-paginacion">
+          </span>
+          <span>
+              <button class="paginacion-sig" ng-click="$ctrl.next();"></button>
+              <button class="paginacion-ultima"ng-click="$ctrl.last();"></button>
+          </span>
+                </div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <div class="botonera">
+        <button class="boton-ok" ng-click="$ctrl.save();">
+            <i class="fa fa-check" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
