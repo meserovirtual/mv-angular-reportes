@@ -1,8 +1,13 @@
 <?php
 
 
+session_start();
+
 if (file_exists('../../../includes/MyDBi.php')) {
+    require_once '../../../includes/MyDBi.php';
     require_once '../../../includes/utils.php';
+} else {
+    require_once 'MyDBi.php';
 }
 
 
