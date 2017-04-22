@@ -26,15 +26,15 @@
         UserService.getDeudores().then(function (data) {
             vm.usuarios = data.data;
             vm.usuario = data.data[0];
-        }).catch(function(data){
-            console.log(data);
+        }).catch(function(error){
+            console.log(error);
         });
 
 
         function cancel() {
-            vm.usuarios = [];
+            //vm.usuarios = [];
             vm.usaurio = {};
-            vm.detailsOpen=false;
+            vm.detailsOpen = false;
             UserVars.clearCache = true;
         }
 
