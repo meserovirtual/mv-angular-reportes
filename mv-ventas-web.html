@@ -1,0 +1,106 @@
+<div class="container" ng-class="{'form-container':$ctrl.detailsOpen}">
+    <div ng-class="{'form-lista':$ctrl.detailsOpen}">
+        <div class="buscador-container">
+            <div class="input">
+                <input type="text" class="buscador" ng-model="$ctrl.filtro"
+                       placeholder="Buscar Categoria" style="width: 100%">
+            </div>
+        </div>
+        <div class="back-pedidos">
+            <label class="label--checkbox" ng-click="$ctrl.soloActivos=!$ctrl.soloActivos;$ctrl.loadCategorias();">
+                <input type="checkbox" class="checkbox" id="check-soloActivos" ng-checked="$ctrl.soloActivos">Mostrar solo activos
+            </label>
+        </div>
+
+        <table style="margin-top: 15px">
+            <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Activo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in $ctrl.categorias | filter:$ctrl.filtro | limitTo:$ctrl.limit:$ctrl.start"
+                ng-click="row.categoria_id=''+row.categoria_id;$ctrl.categoria=row;$ctrl.detailsOpen=true;
+                $ctrl.status=($ctrl.categoria.status == 1 ? true : false);$ctrl.update=true;$ctrl.productos=[];">
+                <td class="">{{row.nombre}}</td>
+                <td class="">{{row.status == 0 ? 'N' : 'S'}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2">
+                    <div class="table-td">
+                        <span>
+                            <button class="paginacion-primera" ng-click="$ctrl.first();"></button>
+                            <button class="paginacion-ant" ng-click="$ctrl.prev();"></button>
+                        </span>
+                        <span class="paginacion-paginas">
+                            <span>{{'PAGE' | xlat}} {{$ctrl.pagina}} {{'OF' | xlat}} {{$ctrl.paginas}}</span>
+                        </span>
+                        <span class="paginacion-go-to">{{'GO_TO' | xlat}}
+                            <input type="number" ng-model="$ctrl.pagina" ng-keyup="$ctrl.goToPagina();"
+                                   class="input-paginacion">
+                        </span>
+                        <span>
+                            <button class="paginacion-sig" ng-click="$ctrl.next();"></button>
+                            <button class="paginacion-ultima"ng-click="$ctrl.last();"></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="botonera">
+            <button type="button" class="boton-agregar" ng-click="$ctrl.cancel();$ctrl.detailsOpen=true;" title="Nuevo">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <form class="form-abm" form-id="abm-detalle" ng-class="{'form-open':$ctrl.detailsOpen}">
+        <div class="detalle-container">
+            <h2>Nueva Categoria</h2>
+
+            <div class="mv-col">
+                <div style="width: 95%" class="input" data-tip="Categoria">
+                    <input style="width: 100%" id="nombre" type="text" ng-model="$ctrl.categoria.nombre"
+                           placeholder="Categoria" autocomplete="off" maxlength="70" />
+                </div>
+            </div>
+            <div class="mv-col">
+                <label class="label--checkbox" ng-click="$ctrl.status=!$ctrl.status" ng-if="$ctrl.update">
+                    <input type="checkbox" class="checkbox" id="check-status" ng-checked="$ctrl.status">Activo
+                </label>
+
+                <button type="button" class="boton-calendario" ng-if="$ctrl.productos.length > 0"
+                        ng-click="$ctrl.showProducto=!$ctrl.showProducto;" title="Info">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <h2 ng-if="$ctrl.showProducto==true">Productos asociados</h2>
+            <div class="mv-col" ng-if="$ctrl.showProducto==true">
+                <div style="width: 95%" class="input">
+                    <div ng-repeat="producto in $ctrl.productos">
+                        {{producto.nombre}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="botonera">
+                <button type="button" class="boton-ok" ng-click="$ctrl.save();" title="Guardar">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="boton-cancelar" ng-click="$ctrl.cancel();"
+                        title="Cancelar">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="boton-eliminar" ng-click="$ctrl.remove();"
+                        title="Borrar">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
