@@ -8,28 +8,36 @@
         </div>
         <div class="back-pedidos">
             <label class="label--checkbox" ng-click="$ctrl.soloActivos=!$ctrl.soloActivos;$ctrl.loadCategorias();">
-                <input type="checkbox" class="checkbox" id="check-soloActivos" ng-checked="$ctrl.soloActivos">Mostrar solo activos
+                <input type="checkbox" class="checkbox" id="check-soloActivos" ng-checked="$ctrl.soloActivos">Mostrar ventas web
             </label>
         </div>
 
         <table style="margin-top: 15px">
             <thead>
             <tr>
-                <th>Categoria</th>
-                <th>Activo</th>
+                <th>Fecha</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Mail</th>
+                <th>Total</th>
+                <th>Estado</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in $ctrl.categorias | filter:$ctrl.filtro | limitTo:$ctrl.limit:$ctrl.start"
+            <tr ng-repeat="row in $ctrl.ventas_web | filter:$ctrl.filtro | limitTo:$ctrl.limit:$ctrl.start"
                 ng-click="row.categoria_id=''+row.categoria_id;$ctrl.categoria=row;$ctrl.detailsOpen=true;
                 $ctrl.status=($ctrl.categoria.status == 1 ? true : false);$ctrl.update=true;$ctrl.productos=[];">
-                <td class="">{{row.nombre}}</td>
-                <td class="">{{row.status == 0 ? 'N' : 'S'}}</td>
+                <td>{{row.fecha}}</td>
+                <td>{{row.usuario[0].apellido}}</td>
+                <td>{{row.usuario[0].nombre}}</td>
+                <td>{{row.usuario[0].mail}}</td>
+                <td>{{row.total}}</td>
+                <td>{{row.status}}</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="2">
+                <td colspan="6">
                     <div class="table-td">
                         <span>
                             <button class="paginacion-primera" ng-click="$ctrl.first();"></button>
@@ -51,16 +59,11 @@
             </tr>
             </tfoot>
         </table>
-        <div class="botonera">
-            <button type="button" class="boton-agregar" ng-click="$ctrl.cancel();$ctrl.detailsOpen=true;" title="Nuevo">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
-        </div>
     </div>
 
     <form class="form-abm" form-id="abm-detalle" ng-class="{'form-open':$ctrl.detailsOpen}">
         <div class="detalle-container">
-            <h2>Nueva Categoria</h2>
+            <h2>Detalle Venta Web</h2>
 
             <div class="mv-col">
                 <div style="width: 95%" class="input" data-tip="Categoria">
@@ -96,10 +99,7 @@
                         title="Cancelar">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="boton-eliminar" ng-click="$ctrl.remove();"
-                        title="Borrar">
-                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
+
             </div>
         </div>
     </form>
