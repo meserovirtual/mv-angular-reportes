@@ -218,12 +218,6 @@
         service.tableToExcel = tableToExcel;
         service.getResumenStock = getResumenStock;
 
-        //Metodos para las ventas web
-        service.getVentasWeb = getVentasWeb;
-        service.getVentasWebByID = getVentasWebByID;
-        service.confirmarVentaWeb = confirmarVentaWeb;
-        service.getVentasSinConfirmar = getVentasSinConfirmar;
-
 
         return service;
 
@@ -273,60 +267,6 @@
                 ctx = {worksheet: worksheetName, table: table.innerHTML},
                 href = uri + base64(format(template, ctx));
             return href;
-        }
-
-
-
-        function confirmarVentaWeb(carrito_id){
-            return $http.post(url,
-                {
-                    function:'confirmarVentaWeb',
-                    carrito_id:carrito_id
-                })
-                .then(function (response) {
-                    //StockVars.clearCache = true;
-                    return response.data;
-                })
-                .catch(function (response) {
-                    ErrorHandler(response.data);
-                });
-        }
-
-
-        function getVentasWeb() {
-            return $http.post(url,
-                {
-                    function: 'getVentasWeb'
-                })
-                .then(function (response) {
-                    //StockVars.clearCache = true;
-                    return response.data;
-                })
-                .catch(function (response) {
-                    ErrorHandler(response.data);
-                });
-        }
-
-        function getVentasWebByID(id) {
-            return getVentasWeb().then(function (data) {
-                var response = data.filter(function (entry) {
-                    return entry.carrito_id === parseInt(id);
-                })[0];
-                return response;
-            }).then(function (data) {
-                return data;
-            });
-        }
-
-        function getVentasSinConfirmar() {
-            return getVentasWeb().then(function (data) {
-                var response = data.filter(function (entry) {
-                    return entry.status === 3;
-                });
-                return response;
-            }).then(function (data) {
-                return data;
-            });
         }
 
     }

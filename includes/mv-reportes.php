@@ -34,7 +34,7 @@ class Reportes extends Main
 
     function getMargenes($desde, $hasta)
     {
-        $db = new MysqliDb();
+        $db = self::$instance->db;
 
 
         $SQL = '
@@ -81,28 +81,28 @@ ORDER BY m.asiento_id, m.movimiento_id;
 
     function getTotalesPorCuenta($desde, $hasta)
     {
-        $db = new MysqliDb();
+        $db = self::$instance->db;
 
 
         $SQL = '(select
-c.descripcion,
-sum(m.importe) importe,
-m.cuenta_id
-from movimientos m left join cuentas c on c.cuenta_id = m.cuenta_id
-where
-m.fecha BETWEEN "' . $desde . '" AND "' . $hasta . '"
-and importe <0
-group by c.descripcion, m.cuenta_id)
-union
-(select
-c.descripcion,
-sum(m.importe) importe,
-m.cuenta_id
-from movimientos m left join cuentas c on c.cuenta_id = m.cuenta_id
-where
-m.fecha BETWEEN "' . $desde . '" AND "' . $hasta . '"
-and importe > 0
-group by c.descripcion, m.cuenta_id)';
+                c.descripcion,
+                sum(m.importe) importe,
+                m.cuenta_id
+                from movimientos m left join cuentas c on c.cuenta_id = m.cuenta_id
+                where
+                m.fecha BETWEEN "' . $desde . '" AND "' . $hasta . '"
+                and importe <0
+                group by c.descripcion, m.cuenta_id)
+                union
+                (select
+                c.descripcion,
+                sum(m.importe) importe,
+                m.cuenta_id
+                from movimientos m left join cuentas c on c.cuenta_id = m.cuenta_id
+                where
+                m.fecha BETWEEN "' . $desde . '" AND "' . $hasta . '"
+                and importe > 0
+                group by c.descripcion, m.cuenta_id)';
 
 
         $results = $db->rawQuery($SQL, '', false);
@@ -282,56 +282,6 @@ group by cuenta_id;';
         array_push($results, $results05);
 
         echo json_encode($results);
-    }
-
-
-
-    function getVentasWeb()
-    {
-        $db = self::$instance->db;
-
-        $results = $db->rawQuery('select carrito_id, status, total, fecha, usuario_id, 0 cliente, 0 detalle from carritos;');
-        $ventas_web = array();
-        $clientes = array();
-
-        foreach ($results as $row) {
-            $db->where('usuario_id', $row["usuario_id"]);
-            $results_clientes = $db->get('usuarios');
-            $row["usuario"] = $results_clientes;
-            array_push($clientes, $row);
-        }
-
-        foreach ($clientes as $row) {
-            $results_venta = $db->rawQuery('select
-                                            carrito_detalle_id,
-                                            carrito_id,
-                                            cantidad,
-                                            producto_id,
-                                            (select nombre from productos where producto_id = cd.producto_id) nombre,
-                                            precio_unitario
-                                            from carrito_detalles cd
-                                            where cd.carrito_id = ' . $row["carrito_id"] . ';');
-            $row["detalle"] = $results_venta;
-            array_push($ventas_web, $row);
-        }
-
-        echo json_encode($ventas_web);
-    }
-
-
-    function confirmarVentaWeb($params)
-    {
-        $db = self::$instance->db;
-
-        $data = array('status'=>3);
-        $db->where("carrito_id", $params['carrito_id']);
-
-        if($db->update("carritos", $data)){
-            echo json_encode('1');
-        } else {
-            echo json_encode('-1');
-        }
-
     }
 
 
