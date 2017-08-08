@@ -113,25 +113,38 @@ ORDER BY m.asiento_id, m.movimiento_id;
 
     function getPlatoMasVendido($params)
     {
-      $db = self::$instance->db;
+        $db = self::$instance->db;
+
+        $filtro_fecha = ($params["fecha_desde"] != "" ? ' AND m.fecha BETWEEN "'. $params["fecha_desde"] .'" AND "'. $params["fecha_hasta"] . '"' : '');
 
 
-      $SQL = 'SELECT m.movimiento_id, m.asiento_id, m.fecha,
+        $SQL = 'SELECT movimiento_id, asiento_id, fecha, cuenta_id, usuario_id, importe,
+(select nombre from sucursales where sucursal_id = t.sucursal_id) sucursal, pos_id,
+SUM(producto_id) as producto_id, SUM(cantidad) as cantidad,
+(select nombre from productos where producto_id = t.producto_id) producto
+FROM ((SELECT m.movimiento_id, m.asiento_id, m.fecha,
 m.cuenta_id, m.usuario_id, m.importe, m.sucursal_id,
-m.pos_id, d.detalle_movimiento_id, d.detalle_tipo_id,
-d.valor, case when d.detalle_tipo_id = 8 then (select nombre
-                                                from productos
-                                                where producto_id = d.valor)
-                                                else d.valor end valor
+m.pos_id, d.valor as producto_id, 0 as cantidad
 FROM detallesmovimientos d
 INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
-WHERE d.detalle_tipo_id IN (8, 13) ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
-AND m.fecha BETWEEN "'. $params["fecha_desde"] .'" AND "'. $params["fecha_hasta"] .'"';'';
+WHERE d.detalle_tipo_id = 8 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
+ AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')
+UNION
+(SELECT m.movimiento_id, m.asiento_id, m.fecha,
+m.cuenta_id, m.usuario_id, m.importe, m.sucursal_id,
+m.pos_id, 0 producto_id, d.valor as cantidad
+FROM detallesmovimientos d
+INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
+WHERE d.detalle_tipo_id = 13 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
+AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')) as t
+GROUP BY 1,2,3,4,5,6,8';
 
-      $results = $db->rawQuery($SQL);
+        $results = $db->rawQuery($SQL);
 
-      echo json_encode($results);
+        echo json_encode($results);
     }
+
+
 
     function cierreDeCaja($params)
     {

@@ -10,13 +10,20 @@
                             ng-change="$ctrl.loadStockPorSucursal();$ctrl.excelToDonwload='';" >
                     </select>
                 </div>
-
-                <div class="form-flex-between" style="margin-top: 30px;">
-                    <button class="btn-excel" ng-click="$ctrl.tableToExcel();">Generar Excel</button>
+                <div class="input">
+                    <label for="origen">Fecha Desde</label>
+                    <input type="date" ng-model="$ctrl.fecha_desde">
+                </div>
+                <div class="input">
+                    <label for="origen">Fecha Hasta</label>
+                    <input type="date" ng-model="$ctrl.fecha_hasta">
                 </div>
             </div>
-            <div class="botonera">
-                <button class="btn-agregar" ng-click="$ctrl.getPlatoMasVendido();">Boton</button>
+            <div class="form-flex-between">
+                <div class="botonera">
+                    <button class="btn-agregar" ng-click="$ctrl.getPlatoMasVendido();">Filtrar</button>
+                    <button class="btn-agregar" ng-click="$ctrl.tableToExcel();">Generar Excel</button>
+                </div>
             </div>
         </div>
     </form>
@@ -31,8 +38,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in $ctrl.platos | filter:$ctrl.filtro">
-            <td class="">{{row.nombre}}</td>
+        <tr ng-repeat="row in $ctrl.platosMasVendidos | filter:$ctrl.filtro">
+            <td class="">{{row.producto}}</td>
             <td class="">{{row.cantidad}}</td>
             <td class="">{{row.sucursal}}</td>
             <td class="">{{row.fecha}}</td>
