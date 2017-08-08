@@ -217,6 +217,7 @@
         service.cierreDeCaja = cierreDeCaja;
         service.tableToExcel = tableToExcel;
         service.getResumenStock = getResumenStock;
+        service.getPlatoMasVendido = getPlatoMasVendido;
 
 
         return service;
@@ -267,6 +268,25 @@
                 ctx = {worksheet: worksheetName, table: table.innerHTML},
                 href = uri + base64(format(template, ctx));
             return href;
+        }
+
+        function getPlatoMasVendido(filtro) {
+            return $http.post(url,
+              {
+                  'function': 'getPlatoMasVendido',
+                  'sucursal_id': filtro.sucursal_id,
+                  'fecha_desde': filtro.fecha_desde,
+                  'fecha_hasta': filtro.fecha_hasta
+              })
+              .then(function (data) {
+                  console.log(data);
+                  //PedidoVars.clearCache = true;
+                  return data;
+              })
+              .catch(function (data) {
+                  //PedidoVars.clearCache = true;
+                  ErrorHandler(data);
+              });
         }
 
     }
