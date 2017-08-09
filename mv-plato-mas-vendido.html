@@ -18,11 +18,15 @@
                     <label for="origen">Fecha Hasta</label>
                     <input type="date" ng-model="$ctrl.fecha_hasta">
                 </div>
-            </div>
-            <div class="form-flex-between">
-                <div class="botonera">
-                    <button class="btn-agregar" ng-click="$ctrl.getPlatoMasVendido();">Filtrar</button>
-                    <button class="btn-agregar" ng-click="$ctrl.tableToExcel();">Generar Excel</button>
+                <div class="input">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.getPlatoMasVendido();" title="Filtrar">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="input">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.tableToExcel();" title="Generar Excel">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -32,16 +36,16 @@
         <thead>
         <tr>
             <th>Producto</th>
-            <th>Cantidad</th>
             <th>Sucursal</th>
+            <th>Cantidad</th>
             <th>Fecha</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="row in $ctrl.platosMasVendidos | filter:$ctrl.filtro">
             <td class="">{{row.producto}}</td>
-            <td class="">{{row.cantidad}}</td>
             <td class="">{{row.sucursal}}</td>
+            <td class="">{{row.cantidad}}</td>
             <td class="">{{row.fecha}}</td>
         </tr>
         </tbody>
