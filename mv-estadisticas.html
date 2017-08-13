@@ -3,6 +3,11 @@
     <form id="masVendidoForm" class="container-form" form-id="mv-mas-vendido">
         <div class="form-container-wrapper">
             <div class="form-flex-between">
+                <div class="input">
+                    <label >Informa el margen de ganancia de un producto</label>
+                </div>
+            </div>
+            <div class="form-flex-between">
                 <div class="buscador-container">
                     <div class="input">
                         <input type="text" class="buscador" ng-model="$ctrl.filtro"
@@ -16,7 +21,7 @@
                     <label for="origen">Sucursal</label>
                     <select name="origen" id="origen" ng-model="$ctrl.sucursal"
                             ng-options="sucursal as sucursal.nombre for sucursal in $ctrl.sucursales"
-                            ng-change="$ctrl.loadStockPorSucursal();$ctrl.excelToDonwload='';" >
+                            ng-change="$ctrl.excelToDonwload='';" >
                     </select>
                 </div>
                 <div class="input">

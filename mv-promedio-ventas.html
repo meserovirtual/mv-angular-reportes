@@ -21,7 +21,7 @@
                     <label for="origen">Sucursal</label>
                     <select name="origen" id="origen" ng-model="$ctrl.sucursal"
                             ng-options="sucursal as sucursal.nombre for sucursal in $ctrl.sucursales"
-                            ng-change="$ctrl.loadStockPorSucursal();$ctrl.excelToDonwload='';" >
+                            ng-change="$ctrl.excelToDonwload='';" >
                     </select>
                 </div>
                 <div class="input">
@@ -33,7 +33,7 @@
                     <input type="date" ng-model="$ctrl.fecha_hasta">
                 </div>
                 <div class="input">
-                    <button type="button" class="boton-agregar" ng-click="$ctrl.getPlatoMasVendido();" title="Filtrar">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.getPromedioDeVentas();" title="Filtrar">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </div>

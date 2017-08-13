@@ -16,7 +16,7 @@
                     <label for="origen">Sucursal</label>
                     <select name="origen" id="origen" ng-model="$ctrl.sucursal"
                             ng-options="sucursal as sucursal.nombre for sucursal in $ctrl.sucursales"
-                            ng-change="$ctrl.loadStockPorSucursal();$ctrl.excelToDonwload='';" >
+                            ng-change="$ctrl.excelToDonwload='';" >
                     </select>
                 </div>
                 <div class="input">

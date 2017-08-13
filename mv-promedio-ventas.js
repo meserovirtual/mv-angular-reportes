@@ -26,7 +26,7 @@
         //FUNCIONES
         vm.loadSucursales = loadSucursales;
         vm.tableToExcel = tableToExcel;
-        vm.getPlatoMasVendido = getPlatoMasVendido;
+        vm.getPromedioDeVentas = getPromedioDeVentas;
 
 
         loadSucursales();
@@ -45,7 +45,7 @@
             window.location.href = ReportesService.tableToExcel("tablaPlatos","Platos Más Vendidos");
         }
 
-        function getPlatoMasVendido() {
+        function getPromedioDeVentas() {
             var filtro = {sucursal_id:-1,fecha_desde:'',fecha_hasta:''};
             //console.log(vm.fecha_desde);
             filtro.sucursal_id = vm.sucursal.sucursal_id;
@@ -77,7 +77,7 @@
             //console.log(filtro);
 
 
-            ReportesService.getPlatoMasVendido(filtro).then(function (data) {
+            ReportesService.getPromedioDeVentas(filtro).then(function (data) {
                 //vm.platos = data;
                 //console.log(data);
                 if(data.status == 200) {
