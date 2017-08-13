@@ -177,6 +177,23 @@ ORDER BY 1,6,3,7';
     }
 
 
+    function getMargenDeGanancia($params)
+    {
+        $db = self::$instance->db;
+
+        $SQL = 'select p.producto_id, p.nombre, p.descripcion, p.pto_repo, p.producto_tipo_id,
+pd.precio_unidad, pr.precio, (pr.precio - pd.precio_unidad) as ganancia
+from productos p
+inner join pedidos_detalles pd on pd.producto_id = p.producto_id
+inner join pedidos pe on pe.pedido_id = pd.pedido_id
+inner join precios pr on pr.producto_id = p.producto_id;';
+
+        $results = $db->rawQuery($SQL);
+
+        echo json_encode($results);
+    }
+
+
     function cierreDeCaja($params)
     {
         $db = self::$instance->db;

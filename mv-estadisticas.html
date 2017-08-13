@@ -25,15 +25,7 @@
                     </select>
                 </div>
                 <div class="input">
-                    <label for="origen">Fecha Desde</label>
-                    <input type="date" ng-model="$ctrl.fecha_desde">
-                </div>
-                <div class="input">
-                    <label for="origen">Fecha Hasta</label>
-                    <input type="date" ng-model="$ctrl.fecha_hasta">
-                </div>
-                <div class="input">
-                    <button type="button" class="boton-agregar" ng-click="$ctrl.getPlatoMasVendido();" title="Filtrar">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.getMargenDeGanancia();" title="Filtrar">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -50,17 +42,17 @@
         <thead>
         <tr>
             <th>Producto</th>
-            <th>Sucursal</th>
-            <th>Cantidad</th>
-            <th>Fecha</th>
+            <th>Precio Unidad</th>
+            <th>Precio Venta</th>
+            <th>Ganancia</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in $ctrl.platosMasVendidos | filter:$ctrl.filtro">
-            <td class="">{{row.producto}}</td>
-            <td class="">{{row.sucursal}}</td>
-            <td class="">{{row.cantidad}}</td>
-            <td class="">{{row.fecha}}</td>
+        <tr ng-repeat="row in $ctrl.productos | filter:$ctrl.filtro">
+            <td class="">{{row.nombre}}</td>
+            <td class="">{{row.precio_unidad | currency}}</td>
+            <td class="">{{row.precio | currency}}</td>
+            <td class="">{{row.ganancia | currency}}</td>
         </tr>
         </tbody>
     </table>

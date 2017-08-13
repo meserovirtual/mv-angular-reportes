@@ -219,6 +219,7 @@
         service.getResumenStock = getResumenStock;
         service.getPlatoMasVendido = getPlatoMasVendido;
         service.getPromedioDeVentas = getPromedioDeVentas;
+        service.getMargenDeGanancia = getMargenDeGanancia;
 
 
         return service;
@@ -296,6 +297,22 @@
                     'sucursal_id': filtro.sucursal_id,
                     'fecha_desde': filtro.fecha_desde,
                     'fecha_hasta': filtro.fecha_hasta
+                })
+                .then(function (data) {
+                    //PedidoVars.clearCache = true;
+                    return data;
+                })
+                .catch(function (data) {
+                    //PedidoVars.clearCache = true;
+                    ErrorHandler(data);
+                });
+        }
+
+        function getMargenDeGanancia(sucursal_id) {
+            return $http.post(url,
+                {
+                    'function': 'getMargenDeGanancia',
+                    'sucursal_id': sucursal_id
                 })
                 .then(function (data) {
                     //PedidoVars.clearCache = true;
