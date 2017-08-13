@@ -33,7 +33,7 @@
 
             var location = next.$$route.originalPath.split('/');
             vm.reporte = (location[1] == 'reportes') ? location[2] : '';
-            console.log(vm.reporte);
+            //console.log(vm.reporte);
         });
     }
 
@@ -279,7 +279,6 @@
                   'fecha_hasta': filtro.fecha_hasta
               })
               .then(function (data) {
-                  console.log(data);
                   //PedidoVars.clearCache = true;
                   return data;
               })

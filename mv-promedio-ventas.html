@@ -3,6 +3,11 @@
     <form id="masVendidoForm" class="container-form" form-id="mv-mas-vendido">
         <div class="form-container-wrapper">
             <div class="form-flex-between">
+                <div class="input">
+                    <label >Informa el promedio de ventas de un producto por día</label>
+                </div>
+            </div>
+            <div class="form-flex-between">
                 <div class="buscador-container">
                     <div class="input">
                         <input type="text" class="buscador" ng-model="$ctrl.filtro"
@@ -20,11 +25,11 @@
                     </select>
                 </div>
                 <div class="input">
-                    <label for="origen">Fecha Desde</label>
+                    <label >Fecha Desde</label>
                     <input type="date" ng-model="$ctrl.fecha_desde">
                 </div>
                 <div class="input">
-                    <label for="origen">Fecha Hasta</label>
+                    <label >Fecha Hasta</label>
                     <input type="date" ng-model="$ctrl.fecha_hasta">
                 </div>
                 <div class="input">
