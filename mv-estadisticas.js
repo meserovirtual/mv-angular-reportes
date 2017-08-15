@@ -31,12 +31,22 @@
 
         function loadSucursales() {
             SucursalesService.get().then(function (data) {
+                vm.sucursales = [];
                 vm.sucursales = data;
-                vm.sucursales.push({sucursal_id: -1, nombre: "Todas", direccion: "", telefono: ""});
+                var encontrado = false;
+                for(var i=0; i <= vm.sucursales.length -1; i++) {
+                    if(vm.sucursales[i].sucursal_id == -1) {
+                        encontrado = true;
+                    }
+                }
+                if(!encontrado) {
+                    vm.sucursales.push({sucursal_id: -1, nombre: "Todas", direccion: "", telefono: ""});
+                }
                 vm.sucursal = vm.sucursales[vm.sucursales.length - 1];
             }).catch(function(error){
                 //console.log(error);
             });
+            console.log(vm.sucursales);
         }
 
         function tableToExcel() {
