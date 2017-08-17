@@ -196,15 +196,6 @@ group by 1,2,3,4,5;';
     }
 
 
-    function _group_by($array, $key) {
-        $return = array();
-        foreach($array as $val) {
-            $return[$val[$key]][] = $val;
-        }
-        return $return;
-    }
-
-
     function getPromedioDeVentas($params)
     {
         $db = self::$instance->db;
@@ -212,29 +203,84 @@ group by 1,2,3,4,5;';
         $filtro_fecha = ($params["fecha_desde"] != "" ? ' AND m.fecha BETWEEN "'. $params["fecha_desde"] .'" AND "'. $params["fecha_hasta"] . '"' : '');
 
 
-        $SQL = 'SELECT fecha, cuenta_id,
-(select nombre from sucursales where sucursal_id = t.sucursal_id) sucursal, pos_id,
-SUM(producto_id) as producto_id, SUM(cantidad) as cantidad,
-(select nombre from productos where producto_id = t.producto_id) producto
-FROM ((SELECT DATE_FORMAT(m.fecha, "%d-%m-%Y") as fecha,
-m.cuenta_id, m.sucursal_id, m.pos_id, d.valor as producto_id, 0 as cantidad
+        $SQL = 'SELECT movimiento_id, fecha, cuenta_id, sucursal_id, pos_id, SUM(producto_id) as producto_id, SUM(cantidad) as cantidad,
+(select nombre from sucursales where sucursal_id = t2.sucursal_id) sucursal
+FROM
+(SELECT movimiento_id, fecha, cuenta_id, sucursal_id, pos_id, producto_id, cantidad
+FROM (
+(SELECT m.movimiento_id, DATE_FORMAT(m.fecha, "%d-%m-%Y") as fecha, m.cuenta_id, m.sucursal_id,
+m.pos_id, d.valor as producto_id, 0 as cantidad
 FROM detallesmovimientos d
 INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
 WHERE d.detalle_tipo_id = 8 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
- AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')
+AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')
 UNION
-(SELECT DATE_FORMAT(m.fecha, "%d-%m-%Y") as fecha,
-m.cuenta_id, m.sucursal_id, m.pos_id, 0 producto_id, d.valor as cantidad
+(SELECT m.movimiento_id, DATE_FORMAT(m.fecha, "%d-%m-%Y") as fecha, m.cuenta_id, m.sucursal_id,
+m.pos_id, 0 producto_id, d.valor as cantidad
 FROM detallesmovimientos d
 INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
 WHERE d.detalle_tipo_id = 13 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
-AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')) as t
-GROUP BY 1,2,4
-ORDER BY 1,6,3,7';
+AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')) as t1
+order by fecha, movimiento_id) as t2
+group by 1,2,3,4,5;';
 
         $results = $db->rawQuery($SQL);
 
-        echo json_encode($results);
+        $productos = array();
+        foreach ($results as $row) {
+            $SQL = "select nombre from productos where producto_id =  " . $row['producto_id'] . ";";
+            $producto = $db->rawQuery($SQL);
+
+            array_push($productos, array(
+                'fecha' => $row['fecha'],
+                'cuenta_id' => $row['cuenta_id'],
+                'pos_id' => $row['pos_id'],
+                'producto_id' => $row['producto_id'],
+                'sucursal_id' => $row['sucursal_id'],
+                'sucursal' => $row['sucursal'],
+                'cantidad' => $row['cantidad'],
+                'producto' => $producto[0]["nombre"]));
+        }
+
+        $promedioVentas = array();
+        $encontrado = false;
+
+        foreach ($productos as $item) {
+            if(count($promedioVentas) == 0) {
+                array_push($promedioVentas, array(
+                    'fecha' => $item['fecha'],
+                    'cuenta_id' => $item['cuenta_id'],
+                    'pos_id' => $item['pos_id'],
+                    'producto_id' => $item['producto_id'],
+                    'sucursal_id' => $item['sucursal_id'],
+                    'sucursal' => $item['sucursal'],
+                    'cantidad' => $item['cantidad'],
+                    'producto' => $item["producto"]));
+            } else {
+                for($i = 0; $i <= count($promedioVentas) - 1; $i++) {
+                    if(($promedioVentas[$i]['producto_id'] == $item['producto_id'])
+                        && ($promedioVentas[$i]['fecha'] == $item['fecha'])) {
+                        $promedioVentas[$i]['cantidad'] = $promedioVentas[$i]['cantidad'] + $item['cantidad'];
+                        $encontrado = true;
+                    }
+                }
+                if(!$encontrado) {
+                    array_push($promedioVentas, array(
+                        'fecha' => $item['fecha'],
+                        'cuenta_id' => $item['cuenta_id'],
+                        'pos_id' => $item['pos_id'],
+                        'producto_id' => $item['producto_id'],
+                        'sucursal_id' => $item['sucursal_id'],
+                        'sucursal' => $item['sucursal'],
+                        'cantidad' => $item['cantidad'],
+                        'producto' => $item["producto"]));
+                }
+            }
+            $encontrado = false;
+        }
+
+
+        echo json_encode($promedioVentas);
     }
 
 

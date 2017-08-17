@@ -88,7 +88,7 @@
 
             ReportesService.getPromedioDeVentas(filtro).then(function (data) {
                 //vm.platos = data;
-                //console.log(data);
+                console.log(data);
                 if(data.status == 200) {
                     if(data.data.length <= 0) {
                         MvUtils.showMessage('warning', 'No hay datos para mostrar');
