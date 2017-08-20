@@ -220,6 +220,7 @@
         service.getPlatoMasVendido = getPlatoMasVendido;
         service.getPromedioDeVentas = getPromedioDeVentas;
         service.getMargenDeGanancia = getMargenDeGanancia;
+        service.getReservas = getReservas;
 
 
         return service;
@@ -321,6 +322,20 @@
                 .catch(function (data) {
                     //PedidoVars.clearCache = true;
                     ErrorHandler(data);
+                });
+        }
+
+        function getReservas(sucursal_id) {
+            return $http.post(url,
+                {
+                    function: 'getReservas',
+                    'sucursal_id': sucursal_id
+                })
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    ErrorHandler(response.data)
                 });
         }
 

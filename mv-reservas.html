@@ -1,0 +1,66 @@
+<div class="container container-bgk container-padding">
+    <h1 class="secciones">Reservas de Mesas</h1>
+    <form id="masVendidoForm" class="container-form" form-id="mv-mas-vendido">
+        <div class="form-container-wrapper">
+            <div class="form-flex-between">
+                <div class="input">
+                    <label >Informa el margen de ganancia de un producto</label>
+                </div>
+            </div>
+            <div class="form-flex-between">
+                <div class="buscador-container">
+                    <div class="input">
+                        <input type="text" class="buscador" ng-model="$ctrl.filtro"
+                               placeholder="Buscar producto" style="width: 100%">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-flex-between">
+                <div class="input">
+                    <label for="origen">Sucursal</label>
+                    <select name="origen" id="origen" ng-model="$ctrl.sucursal"
+                            ng-options="sucursal as sucursal.nombre for sucursal in $ctrl.sucursales"
+                            ng-change="$ctrl.excelToDonwload='';" >
+                    </select>
+                </div>
+                <div class="input">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.getReservas();" title="Filtrar">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="input">
+                    <button type="button" class="boton-agregar" ng-click="$ctrl.tableToExcel();" title="Generar Excel">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <table id="tablaReservas">
+        <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Sucursal</th>
+            <th>Fecha Reserva</th>
+            <th>Hr Reserva</th>
+            <th>Comensales</th>
+            <th>Cliente</th>
+            <th>Teléfono</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in $ctrl.reservas | filter:$ctrl.filtro">
+            <td class="">{{row.reserva_id}}</td>
+            <td class="">{{row.sucursal}}</td>
+            <td class="">{{row.fecha}}</td>
+            <td class="">{{row.hora}}</td>
+            <td class="">{{row.comensales}}</td>
+            <td class="">{{row.apellido + ', ' + row.nombre}}</td>
+            <td class="">{{row.telefono}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+

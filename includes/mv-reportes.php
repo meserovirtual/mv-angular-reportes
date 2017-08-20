@@ -304,6 +304,27 @@ order by p.nombre, pe.fecha_pedido DESC;';
     }
 
 
+    function getReservas($params) {
+
+        $db = self::$instance->db;
+
+        $filtro = ($params["sucursal_id"] != -1 ? ' where  r.sucursal_id = '. $params["sucursal_id"] . ' ' : ' ');
+
+        $SQL = 'SELECT r.reserva_id, s.nombre as sucursal, r.comensales, DATE_FORMAT(r.fecha, "%d-%m-%Y") fecha,
+DATE_FORMAT(r.fecha, "%H:%i:%s") hora, r.pagado, c.comanda_id, u.apellido, u.nombre, u.telefono
+FROM reservas r
+INNER JOIN comandas c ON c.comanda_id = r.comanda_id
+INNER JOIN sucursales s ON s.sucursal_id = r.sucursal_id
+INNER JOIN usuarios u ON u.usuario_id = c.usuario_id ' . $filtro . '
+';
+
+        $results = $db->rawQuery($SQL);
+
+        echo json_encode($results);
+
+    }
+
+
     function cierreDeCaja($params)
     {
         $db = self::$instance->db;
