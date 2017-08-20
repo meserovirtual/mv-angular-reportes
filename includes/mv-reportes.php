@@ -316,7 +316,7 @@ FROM reservas r
 INNER JOIN comandas c ON c.comanda_id = r.comanda_id
 INNER JOIN sucursales s ON s.sucursal_id = r.sucursal_id
 INNER JOIN usuarios u ON u.usuario_id = c.usuario_id ' . $filtro . '
-';
+ORDER BY s.sucursal_id, r.fecha as';
 
         $results = $db->rawQuery($SQL);
 
