@@ -60,6 +60,7 @@ class Reportes extends Main
 FROM
     movimientos m
 WHERE
+    m.empresa_id = ' . getEmpresa() .' and 
     m.movimiento_id IN (SELECT
             d.movimiento_id
         FROM
@@ -90,6 +91,7 @@ ORDER BY m.asiento_id, m.movimiento_id;
                 m.cuenta_id
                 from movimientos m left join cuentas c on c.cuenta_id = m.cuenta_id
                 where
+                m.empresa_id = ' . getEmpresa() .' and 
                 m.fecha BETWEEN "' . $desde . '" AND "' . $hasta . '"
                 and importe <0
                 group by c.descripcion, m.cuenta_id)
@@ -296,6 +298,7 @@ from productos p
 inner join pedidos_detalles pd on pd.producto_id = p.producto_id
 inner join pedidos pe on pe.pedido_id = pd.pedido_id
 inner join precios pr on pr.producto_id = p.producto_id ' . $filtro . '
+where p.empresa_id = ' . getEmpresa() .'
 order by p.nombre, pe.fecha_pedido DESC;';
 
         $results = $db->rawQuery($SQL);
@@ -316,6 +319,7 @@ FROM reservas r
 INNER JOIN comandas c ON c.comanda_id = r.comanda_id
 INNER JOIN sucursales s ON s.sucursal_id = r.sucursal_id
 INNER JOIN usuarios u ON u.usuario_id = c.usuario_id ' . $filtro . '
+where r.empresa_id = ' . getEmpresa() .'
 ORDER BY s.sucursal_id, r.fecha';
 
         $results = $db->rawQuery($SQL);
@@ -353,7 +357,7 @@ WHERE
         FROM
             cajas
         WHERE
-            pos_id = ' . $params['pos_id'] . ' AND sucursal_id = ' . $params['sucursal_id'] . '
+            pos_id = ' . $params['pos_id'] . ' AND sucursal_id = ' . $params['sucursal_id'] . ' and m.empresa_id = ' . getEmpresa() .'
         ORDER BY caja_id DESC
         LIMIT 1)
         AND sucursal_id = ' . $params['sucursal_id'] . '
@@ -369,7 +373,7 @@ UNION
             SUM(m.importe)
         FROM
             movimientos m
-        WHERE
+        WHERE m.empresa_id = ' . getEmpresa() .' and
             m.fecha >= (NOW() between  DATE_FORMAT(NOW() ,"%Y-%m-01") AND NOW() )
                 AND sucursal_id = ' . $params['sucursal_id'] . '
                 AND m.cuenta_id = "1.1.1.3' . $params['sucursal_id'] . '"
@@ -388,13 +392,14 @@ UNION
             saldo_inicial
         FROM
             cajas
-        WHERE
+        WHERE empresa_id = ' . getEmpresa() .' and 
             pos_id = ' . $params['pos_id'] . ' AND sucursal_id = ' . $params['sucursal_id'] . '
         ORDER BY caja_id DESC
         LIMIT 1))  importe, "1.1.1.0' . $params['sucursal_id'] . '" cuenta_id
 FROM
     movimientos m
 WHERE
+  m.empresa_id = ' . getEmpresa() .' and
     m.asiento_id >= (SELECT
             asiento_inicio_id
         FROM
@@ -408,7 +413,7 @@ WHERE
         AND m.cuenta_id = "1.1.1.0' . $params['sucursal_id'] . '")';
 
 
-        $SQL02 = 'select * from cajas c inner join cajas_detalles d on c.caja_id = d.caja_id where c.pos_id = ' . $params['pos_id'] . ' and c.sucursal_id = ' . $params['sucursal_id'] . ' order by c.caja_id desc limit 1;';
+        $SQL02 = 'select * from cajas c inner join cajas_detalles d on c.caja_id = d.caja_id where c.empresa_id = ' . getEmpresa() .' and  c.pos_id = ' . $params['pos_id'] . ' and c.sucursal_id = ' . $params['sucursal_id'] . ' order by c.caja_id desc limit 1;';
 
         $SQL03 = 'SELECT
     sum((select valor from detallesmovimientos where movimiento_id = m.movimiento_id and detalle_tipo_id = 13)) cantidad,
@@ -422,6 +427,7 @@ FROM
         INNER JOIN
     movimientos mm ON mm.movimiento_id = m.movimiento_id
 WHERE
+    m.empresa_id = ' . getEmpresa() .' and 
     mm.movimiento_id IN (SELECT
             movimiento_id
         FROM
@@ -450,7 +456,7 @@ FROM
     INNER JOIN
     cuentas c
     ON m.cuenta_id = c.cuenta_id
-WHERE
+WHERE m.empresa_id = ' . getEmpresa() .' and 
 m.sucursal_id = ' . $params['sucursal_id'] . ' and m.pos_id=' . $params['pos_id'] . ' and
     (m.cuenta_id LIKE "5.2.%" || m.cuenta_id LIKE "5.3.%")
         AND d.detalle_tipo_id = 2
@@ -468,7 +474,7 @@ m.sucursal_id = ' . $params['sucursal_id'] . ' and m.pos_id=' . $params['pos_id'
 movimientos m
 left join cuentas c
 on m.cuenta_id = c.cuenta_id
-where m.cuenta_id in("1.1.4.01", "1.1.1.22","1.1.1.21","1.1.1.24", "1.1.1.0' . $params['sucursal_id'] . '")
+where m.empresa_id = ' . getEmpresa() .' and  m.cuenta_id in("1.1.4.01", "1.1.1.22","1.1.1.21","1.1.1.24", "1.1.1.0' . $params['sucursal_id'] . '")
 and m.importe > 0 and
 m.sucursal_id = ' . $params['sucursal_id'] . ' and m.pos_id=' . $params['pos_id'] . '
         AND m.asiento_id >= (SELECT
