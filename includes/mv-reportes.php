@@ -198,6 +198,99 @@ group by 1,2,3,4,5;';
     }
 
 
+    function getTablasDeProduccion($params)
+    {
+        $db = self::$instance->db;
+
+        $filtro_fecha = ($params["fecha_desde"] != "" ? ' AND m.fecha BETWEEN "'. $params["fecha_desde"] .'" AND "'. $params["fecha_hasta"] . '"' : '');
+
+
+        $SQL = 'SELECT movimiento_id, DATE(fecha) as fecha, HOUR(fecha) as hora, cuenta_id, sucursal_id, pos_id, SUM(producto_id) as producto_id, SUM(cantidad) as cantidad,
+(select nombre from sucursales where sucursal_id = t2.sucursal_id) sucursal
+FROM
+(SELECT movimiento_id, fecha, HOUR(fecha) as hora, cuenta_id, sucursal_id, pos_id, producto_id, cantidad
+FROM (
+(SELECT m.movimiento_id, m.fecha, HOUR(m.fecha) as hora, m.cuenta_id, m.sucursal_id,
+m.pos_id, d.valor as producto_id, 0 as cantidad
+FROM detallesmovimientos d
+INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
+WHERE d.detalle_tipo_id = 8 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
+AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')
+UNION
+(SELECT m.movimiento_id, m.fecha, HOUR(m.fecha) as hora, m.cuenta_id, m.sucursal_id,
+m.pos_id, 0 producto_id, d.valor as cantidad
+FROM detallesmovimientos d
+INNER JOIN movimientos m ON m.movimiento_id = d.movimiento_id
+WHERE d.detalle_tipo_id = 13 ' . ($params["sucursal_id"] == -1 ? ' ' : ' AND m.sucursal_id = ' . $params["sucursal_id"] ) . '
+AND m.cuenta_id = "4.1.1.01" '. $filtro_fecha .')) as t1
+order by fecha, movimiento_id) as t2
+group by 1,2,3,4,5,6 ;';
+
+
+        $results = $db->rawQuery($SQL);
+
+        $productos = array();
+        foreach ($results as $row) {
+            $SQL = "select nombre from productos where producto_id =  " . $row['producto_id'] . ";";
+            $producto = $db->rawQuery($SQL);
+
+            array_push($productos, array(
+                'fecha' => $row['fecha'],
+                'hora' => $row['hora'],
+                'cuenta_id' => $row['cuenta_id'],
+                'pos_id' => $row['pos_id'],
+                'producto_id' => $row['producto_id'],
+                'sucursal_id' => $row['sucursal_id'],
+                'sucursal' => $row['sucursal'],
+                'cantidad' => $row['cantidad'],
+                'producto' => $producto[0]["nombre"]));
+        }
+
+        $tablasProduccion = array();
+        $encontrado = false;
+
+        foreach ($productos as $item) {
+            if(count($tablasProduccion) == 0) {
+                array_push($tablasProduccion, array(
+                    'fecha' => $item['fecha'],
+                    'hora' => $item['hora'],
+                    'cuenta_id' => $item['cuenta_id'],
+                    'pos_id' => $item['pos_id'],
+                    'producto_id' => $item['producto_id'],
+                    'sucursal_id' => $item['sucursal_id'],
+                    'sucursal' => $item['sucursal'],
+                    'cantidad' => $item['cantidad'],
+                    'producto' => $item["producto"]));
+            } else {
+                for($i = 0; $i <= count($tablasProduccion) - 1; $i++) {
+                    if($tablasProduccion[$i]['producto_id'] == $item['producto_id']
+                        && $tablasProduccion[$i]['fecha'] == $item['fecha']
+                        && $tablasProduccion[$i]['hora'] == $item['hora']) {
+                        $tablasProduccion[$i]['cantidad'] = $tablasProduccion[$i]['cantidad'] + $item['cantidad'];
+                        $encontrado = true;
+                    }
+                }
+                if(!$encontrado) {
+                    array_push($tablasProduccion, array(
+                        'fecha' => $item['fecha'],
+                        'hora' => $item['hora'],
+                        'cuenta_id' => $item['cuenta_id'],
+                        'pos_id' => $item['pos_id'],
+                        'producto_id' => $item['producto_id'],
+                        'sucursal_id' => $item['sucursal_id'],
+                        'sucursal' => $item['sucursal'],
+                        'cantidad' => $item['cantidad'],
+                        'producto' => $item["producto"]));
+                }
+            }
+            $encontrado = false;
+        }
+
+
+        echo json_encode($tablasProduccion);
+    }
+
+
     function getPromedioDeVentas($params)
     {
         $db = self::$instance->db;

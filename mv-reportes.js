@@ -221,6 +221,7 @@
         service.getPromedioDeVentas = getPromedioDeVentas;
         service.getMargenDeGanancia = getMargenDeGanancia;
         service.getReservas = getReservas;
+        service.getTablasDeProduccion = getTablasDeProduccion;
 
 
         return service;
@@ -277,6 +278,24 @@
             return $http.post(url,
                 {
                     'function': 'getPlatoMasVendido',
+                    'sucursal_id': filtro.sucursal_id,
+                    'fecha_desde': filtro.fecha_desde,
+                    'fecha_hasta': filtro.fecha_hasta
+                })
+                .then(function (data) {
+                    //PedidoVars.clearCache = true;
+                    return data;
+                })
+                .catch(function (data) {
+                    //PedidoVars.clearCache = true;
+                    ErrorHandler(data);
+                });
+        }
+
+        function getTablasDeProduccion(filtro) {
+            return $http.post(url,
+                {
+                    'function': 'getTablasDeProduccion',
                     'sucursal_id': filtro.sucursal_id,
                     'fecha_desde': filtro.fecha_desde,
                     'fecha_hasta': filtro.fecha_hasta
